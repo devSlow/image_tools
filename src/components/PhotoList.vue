@@ -9,6 +9,7 @@
         v-for="group in store.groups"
         :key="group.id"
         :group="group"
+        @click.native="$emit('select')"
         @remove="store.removeGroup(group.id)"
         @recrop="store.openCropModal(group.rawImages[0]?.id)"
       />
@@ -28,6 +29,10 @@ const store = usePhotoStore()
 const croppedCount = computed(() =>
   store.groups.filter(g => g.croppedPhotos.length > 0).length,
 )
+
+defineEmits<{
+  select: []
+}>()
 </script>
 
 <style scoped>

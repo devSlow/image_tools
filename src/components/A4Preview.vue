@@ -83,4 +83,23 @@ const store = usePhotoStore()
   font-size: 13px;
   color: #888;
 }
+
+@media (max-width: 768px) {
+  .a4-preview {
+    padding: 12px;
+  }
+  .empty-card {
+    width: 90vw;
+    padding: 32px 24px;
+  }
+  .empty-title {
+    font-size: 16px;
+  }
+  .empty-desc {
+    font-size: 13px;
+  }
+  .page-indicator {
+    font-size: 12px;
+  }
+}
 </style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { usePhotoStore } from './stores/photoStore'
 import { useUpload } from './composables/useUpload'
 import { loadImage } from './utils/image'
@@ -19,6 +19,33 @@ const store = usePhotoStore()
 const { handleFiles } = useUpload()
 const fileInput = ref<HTMLInputElement | null>(null)
 const previewArea = ref<HTMLDivElement | null>(null)
+
+const sidebarOpen = ref(false)
+const isMobile = ref(false)
+
+function checkMobile() {
+  isMobile.value = window.innerWidth <= 768
+}
+
+function toggleSidebar() {
+  sidebarOpen.value = !sidebarOpen.value
+}
+
+function closeSidebar() {
+  sidebarOpen.value = false
+}
+
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
+})
+
+// Emit to Toolbar
+defineExpose({ toggleSidebar })
 
 // 裁剪完成后自动滚动到预览区域
 watch(() => store.cropModalVisible, (visible, oldVisible) => {
@@ -161,10 +188,15 @@ async function handlePrint() {
     style="display: none"
     @change="onFileChange"
   />
-  <Toolbar @upload="triggerUpload" @print="handlePrint" />
+  <Toolbar @upload="triggerUpload" @print="handlePrint" @toggle-sidebar="isMobile && toggleSidebar()" />
   <div class="app-layout">
-    <div class="sidebar">
-      <PhotoList />
+    <div
+      class="sidebar-backdrop"
+      :class="{ open: sidebarOpen }"
+      @click="closeSidebar"
+    ></div>
+    <div class="sidebar" :class="{ open: sidebarOpen }">
+      <PhotoList @select="closeSidebar" />
       <div class="copyright">© 2026 郎溪县残疾人联合会</div>
     </div>
     <div ref="previewArea" class="preview-wrapper">
@@ -186,5 +218,38 @@ async function handlePrint() {
   text-align: center;
   font-size: 12px;
   color: #bbb;
+}
+.sidebar-backdrop {
+  display: none;
+}
+@media (max-width: 768px) {
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 99;
+  }
+  .sidebar-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 85vw;
+    max-width: 300px;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
 }
 </style>

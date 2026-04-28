@@ -1,6 +1,13 @@
 <template>
   <div class="toolbar">
-    <h1 class="app-title">2寸证件照排版工具 <span class="copyright">郎溪县残疾人联合会</span></h1>
+    <div class="toolbar-left">
+      <button class="menu-btn" @click="$emit('toggle-sidebar')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12h18M3 6h18M3 18h18" />
+        </svg>
+      </button>
+      <h1 class="app-title">2寸证件照排版工具 <span class="copyright">郎溪县残疾人联合会</span></h1>
+    </div>
     <div class="toolbar-actions">
       <button class="btn btn-primary" @click="$emit('upload')">
         上传照片
@@ -27,6 +34,7 @@ const hasLayout = computed(() => store.layoutResult !== null && store.layoutResu
 defineEmits<{
   upload: []
   print: []
+  'toggle-sidebar': []
 }>()
 </script>
 
@@ -38,6 +46,19 @@ defineEmits<{
   padding: 12px 20px;
   background: white;
   border-bottom: 1px solid #e0e0e0;
+}
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.menu-btn {
+  display: none;
+  padding: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
 }
 .app-title {
   font-size: 18px;
@@ -80,5 +101,21 @@ defineEmits<{
   background: #4a90d9;
   color: white;
   border-color: #4a90d9;
+}
+
+@media (max-width: 768px) {
+  .menu-btn {
+    display: block;
+  }
+  .app-title {
+    font-size: 15px;
+  }
+  .app-title .copyright {
+    display: none;
+  }
+  .btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
 }
 </style>
