@@ -232,7 +232,7 @@ onUnmounted(() => {
 .crop-canvas-area {
   flex: 1;
   position: relative;
-  background: #2a2a2a;
+  background: #ffffff;
 }
 .crop-canvas-area canvas {
   position: absolute;
