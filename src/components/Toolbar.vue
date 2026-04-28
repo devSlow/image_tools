@@ -1,0 +1,76 @@
+<template>
+  <div class="toolbar">
+    <h1 class="app-title">2寸证件照排版工具</h1>
+    <div class="toolbar-actions">
+      <button class="btn btn-primary" @click="$emit('upload')">
+        上传照片
+      </button>
+      <button
+        class="btn"
+        :disabled="!hasLayout"
+        @click="$emit('print')"
+      >
+        打印
+      </button>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { usePhotoStore } from '../stores/photoStore'
+
+const store = usePhotoStore()
+
+const hasLayout = computed(() => store.layoutResult !== null && store.layoutResult.totalPages > 0)
+
+defineEmits<{
+  upload: []
+  print: []
+}>()
+</script>
+
+<style scoped>
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+}
+.app-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+.toolbar-actions {
+  display: flex;
+  gap: 8px;
+}
+.btn {
+  padding: 8px 18px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  background: white;
+  color: #333;
+}
+.btn:hover:not(:disabled) {
+  background: #f5f5f5;
+}
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: #4a90d9;
+  color: white;
+  border-color: #4a90d9;
+}
+.btn-primary:hover {
+  background: #3a7bc8;
+}
+</style>
