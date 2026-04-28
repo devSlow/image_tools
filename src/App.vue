@@ -32,8 +32,18 @@ function onFileChange(e: Event) {
 }
 
 async function handlePrint() {
+  const printedGroups = store.groups.filter(g => g.croppedPhotos.length > 0 && store.isPrinted(g.id))
   const unprintedGroups = store.groups.filter(g => g.croppedPhotos.length > 0 && !store.isPrinted(g.id))
-  if (unprintedGroups.length === 0) return
+
+  if (unprintedGroups.length === 0) {
+    alert('所有照片都已打印过了')
+    return
+  }
+
+  if (printedGroups.length > 0) {
+    const confirmed = confirm(`${printedGroups.length} 组照片已打印，是否继续打印剩余的 ${unprintedGroups.length} 组？`)
+    if (!confirmed) return
+  }
 
   const layout = calculateLayout(unprintedGroups)
 
