@@ -37,7 +37,7 @@ const { layoutResult } = useLayout()
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  background: #e8e8e8;
+  background: #ffffff;
   overflow-y: auto;
   min-height: 0;
 }
