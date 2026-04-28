@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { usePhotoStore } from './stores/photoStore'
 import { useUpload } from './composables/useUpload'
 import { loadImage } from './utils/image'
@@ -18,6 +18,16 @@ import CropModal from './components/CropModal.vue'
 const store = usePhotoStore()
 const { handleFiles } = useUpload()
 const fileInput = ref<HTMLInputElement | null>(null)
+const previewArea = ref<HTMLDivElement | null>(null)
+
+// 裁剪完成后自动滚动到预览区域
+watch(() => store.cropModalVisible, (visible, oldVisible) => {
+  if (oldVisible && !visible) {
+    nextTick(() => {
+      previewArea.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }
+})
 
 function triggerUpload() {
   fileInput.value?.click()
@@ -57,6 +67,11 @@ async function handlePrint() {
   .a4-print-page { width: 210mm; height: 297mm; page-break-after: always; margin: 0; }
   .a4-print-page:last-child { page-break-after: auto; }
   .a4-print-page canvas { width: 210mm; height: 297mm; display: block; }
+.preview-wrapper {
+  flex: 1;
+  display: flex;
+  min-width: 0;
+}
 </style>
 </head>
 <body><div id="pages"></div></body>
@@ -150,8 +165,26 @@ async function handlePrint() {
   <div class="app-layout">
     <div class="sidebar">
       <PhotoList />
+      <div class="copyright">© 2026 郎溪县残疾人联合会</div>
     </div>
-    <A4Preview />
+    <div ref="previewArea" class="preview-wrapper">
+      <A4Preview />
+    </div>
   </div>
   <CropModal />
 </template>
+
+<style scoped>
+.preview-wrapper {
+  flex: 1;
+  display: flex;
+  min-width: 0;
+}
+.copyright {
+  margin-top: auto;
+  padding-top: 16px;
+  text-align: center;
+  font-size: 12px;
+  color: #bbb;
+}
+</style>

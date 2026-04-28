@@ -1,6 +1,6 @@
 <template>
   <div class="toolbar">
-    <h1 class="app-title">2寸证件照排版工具</h1>
+    <h1 class="app-title">2寸证件照排版工具 <span class="copyright">郎溪县残疾人联合会</span></h1>
     <div class="toolbar-actions">
       <button class="btn btn-primary" @click="$emit('upload')">
         上传照片
@@ -45,6 +45,12 @@ defineEmits<{
   margin: 0;
   color: #333;
 }
+.app-title .copyright {
+  font-size: 12px;
+  font-weight: 400;
+  color: #999;
+  margin-left: 8px;
+}
 .toolbar-actions {
   display: flex;
   gap: 8px;
@@ -70,7 +76,9 @@ defineEmits<{
   color: white;
   border-color: #4a90d9;
 }
-.btn-primary:hover {
-  background: #3a7bc8;
+.btn-primary:hover:not(:disabled) {
+  background: #4a90d9;
+  color: white;
+  border-color: #4a90d9;
 }
 </style>

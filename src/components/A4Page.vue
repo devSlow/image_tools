@@ -25,22 +25,19 @@ async function renderPage() {
   const canvas = pageCanvas.value
   if (!canvas) return
 
-  // Use 300 DPI for sharp print
+  // 打印级渲染：300 DPI，与打印输出完全一致
   canvas.width = A4_WIDTH_300DPI
   canvas.height = A4_HEIGHT_300DPI
 
-  // CSS display size: use max-width to fit container, maintain A4 aspect ratio
+  // 显示尺寸：按 A4 比例缩放，确保预览和打印宽高比一致
   canvas.style.width = '100%'
   canvas.style.height = 'auto'
 
   const ctx = canvas.getContext('2d')!
-
-  // White background
   ctx.fillStyle = '#ffffff'
   ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-  const pxPerMm = canvas.width / A4_WIDTH_MM // pixels per mm at 300DPI
-
+  const pxPerMm = canvas.width / A4_WIDTH_MM
   let currentY = MARGIN_TOP_MM * pxPerMm
 
   for (const row of props.page.rows) {
@@ -48,29 +45,26 @@ async function renderPage() {
     const photoH = PHOTO_HEIGHT_MM * pxPerMm
     const gap = PHOTO_GAP_MM * pxPerMm
     const totalRowWidth = PHOTOS_PER_ROW * photoW + (PHOTOS_PER_ROW - 1) * gap
-    const startX = (canvas.width - totalRowWidth) / 2 // Center
+    const startX = (canvas.width - totalRowWidth) / 2
 
-    // Draw photos
+    // 画照片
     for (let i = 0; i < row.photos.length; i++) {
       const photo = row.photos[i]
       const x = startX + i * (photoW + gap)
-
       try {
         const img = await loadImage(photo.dataUrl)
         ctx.drawImage(img, x, currentY, photoW, photoH)
       } catch {
-        // Fallback: gray placeholder
         ctx.fillStyle = '#e0e0e0'
         ctx.fillRect(x, currentY, photoW, photoH)
       }
     }
 
-    // Draw cut lines (dashed)
+    // 切割线（虚线）
     ctx.setLineDash([6, 4])
     ctx.strokeStyle = '#bbbbbb'
     ctx.lineWidth = 1
 
-    // Horizontal lines (top and bottom of row, through gap center)
     const topLineY = currentY - gap / 2
     const bottomLineY = currentY + photoH + gap / 2
 
@@ -84,7 +78,7 @@ async function renderPage() {
     ctx.lineTo(startX + totalRowWidth + gap / 2, bottomLineY)
     ctx.stroke()
 
-    // Vertical lines (between each photo)
+    // 垂直分割线
     for (let i = 0; i <= row.photos.length; i++) {
       const lineX = startX + i * (photoW + gap) - gap / 2
       ctx.beginPath()
@@ -94,7 +88,6 @@ async function renderPage() {
     }
 
     ctx.setLineDash([])
-
     currentY += photoH + gap
   }
 }
@@ -106,12 +99,14 @@ onMounted(() => nextTick(renderPage))
 <style scoped>
 .a4-page-wrapper {
   background: white;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
   margin: 0 auto;
   width: 100%;
   max-width: 500px;
 }
 .a4-canvas {
   display: block;
+  width: 100%;
+  height: auto;
 }
 </style>
