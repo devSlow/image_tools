@@ -263,7 +263,7 @@ export function useCrop(_mainCanvas: Ref<HTMLCanvasElement | null>, overlayCanva
     const box = cropBox.value
 
     // Semi-transparent mask
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
     ctx.fillRect(0, 0, w, box.y)
     ctx.fillRect(0, box.y + box.height, w, h - box.y - box.height)
     ctx.fillRect(0, box.y, box.x, box.height)
