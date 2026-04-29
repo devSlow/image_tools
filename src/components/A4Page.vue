@@ -10,7 +10,7 @@ import { loadImage } from '../utils/image'
 import type { A4LayoutPage } from '../types'
 import {
   A4_WIDTH_MM,
-  MARGIN_TOP_MM,
+  MARGIN_TOP_MM, MARGIN_LEFT_MM,
   PHOTO_WIDTH_MM, PHOTO_HEIGHT_MM, PHOTO_GAP_MM, PHOTOS_PER_ROW,
   A4_WIDTH_300DPI, A4_HEIGHT_300DPI,
 } from '../utils/constants'
@@ -44,8 +44,7 @@ async function renderPage() {
     const photoW = PHOTO_WIDTH_MM * pxPerMm
     const photoH = PHOTO_HEIGHT_MM * pxPerMm
     const gap = PHOTO_GAP_MM * pxPerMm
-    const totalRowWidth = PHOTOS_PER_ROW * photoW + (PHOTOS_PER_ROW - 1) * gap
-    const startX = (canvas.width - totalRowWidth) / 2
+    const startX = MARGIN_LEFT_MM * pxPerMm
 
     // 画照片
     for (let i = 0; i < row.photos.length; i++) {

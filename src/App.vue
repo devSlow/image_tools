@@ -7,7 +7,7 @@ import { calculateLayout } from './utils/layout'
 import {
   A4_WIDTH_300DPI, A4_HEIGHT_300DPI,
   A4_WIDTH_MM,
-  MARGIN_TOP_MM,
+  MARGIN_TOP_MM, MARGIN_LEFT_MM,
   PHOTO_WIDTH_MM, PHOTO_HEIGHT_MM, PHOTO_GAP_MM, PHOTOS_PER_ROW,
 } from './utils/constants'
 import Toolbar from './components/Toolbar.vue'
@@ -127,8 +127,7 @@ async function handlePrint() {
       const photoW = PHOTO_WIDTH_MM * pxPerMm
       const photoH = PHOTO_HEIGHT_MM * pxPerMm
       const gap = PHOTO_GAP_MM * pxPerMm
-      const totalRowWidth = PHOTOS_PER_ROW * photoW + (PHOTOS_PER_ROW - 1) * gap
-      const startX = (canvas.width - totalRowWidth) / 2
+      const startX = MARGIN_LEFT_MM * pxPerMm
 
       for (let i = 0; i < row.photos.length; i++) {
         const photo = row.photos[i]

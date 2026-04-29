@@ -14,13 +14,13 @@ export const A4_WIDTH_PX = 794
 export const A4_HEIGHT_PX = 1123
 
 // 打印边距（毫米）
-export const MARGIN_TOP_MM = 5
-export const MARGIN_BOTTOM_MM = 5
-export const MARGIN_LEFT_MM = 5
-export const MARGIN_RIGHT_MM = 5
+export const MARGIN_TOP_MM = 3
+export const MARGIN_BOTTOM_MM = 3
+export const MARGIN_LEFT_MM = 3
+export const MARGIN_RIGHT_MM = 3
 
 // 照片间距（毫米）——裁剪线区域宽度
-export const PHOTO_GAP_MM = 2
+export const PHOTO_GAP_MM = 3
 
 // 每行照片数
 export const PHOTOS_PER_ROW = 4
